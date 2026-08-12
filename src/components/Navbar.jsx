@@ -32,7 +32,6 @@ const Navbar = ({ setTerminal }) => {
                 className='md:hidden'>
                 <Menu size={24} />
             </button>
-            {/* {showMenu && */}
                 <div ref={menuRef} className='flex flex-col gap-5 z-10 inset-0  fixed bg-black px-10 py-10'>
                     <button
                         onClick={() => setShowMenu(false)}
@@ -58,8 +57,6 @@ const Navbar = ({ setTerminal }) => {
                         className='self-start py-3 px-3 bg-[#171717] md:px-5 md:py-2 border-2 border-[#383837] text-[#F2F0EB] font-mono'><span className='text-sm flex gap-2 items-center'><Terminal size={20} />Terminal</span></button>
                     <button className='self-start py-3 px-3 bg-[#F2F0EB] text-[#090909] font-mono md:px-5 md:py-2 text-sm font-semibold'>Let's Connect</button>
                 </div>
-                
-            {/* } */}
             <ul className=' hidden md:flex gap-10'>
                 <a href='#about' onClick={() => scrollTOSection("about")}>ABOUT</a>
                 <a href='#skills' onClick={() => scrollTOSection("skills")}>SKILLS</a>
@@ -69,8 +66,10 @@ const Navbar = ({ setTerminal }) => {
             <div className=' hidden md:flex md:gap-5'>
                 <button
                     onClick={() => { setTerminal(true) }}
-                    className='bg-[#171717] px-5 py-2 border-2 border-[#383837] text-[#F2F0EB] font-mono'><span className='text-sm flex gap-2 items-center'><Terminal size={20} />Terminal</span></button>
-                <button className='bg-[#F2F0EB] text-[#090909] font-mono md:px-5 md:py-2 text-sm font-semibold'>Let's Connect</button>
+                    className='cursor-pointer bg-[#171717] px-5 py-2 border-2 border-[#383837] text-[#F2F0EB] font-mono'><span className='text-sm flex gap-2 items-center'><Terminal size={20} />Terminal</span></button>
+                <button
+                    onClick={()=>scrollTOSection("contact")}
+                    className='cursor-pointer bg-[#F2F0EB] text-[#090909] font-mono md:px-5 md:py-2 text-sm font-semibold'>Let's Connect</button>
             </div>
         </nav>
     )
