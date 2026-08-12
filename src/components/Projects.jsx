@@ -59,7 +59,7 @@ const Projects = () => {
         >
             <div className="flex flex-col gap-5">
                 <div className="flex gap-3 font-mono text-[12px] font-medium text-[#71706F] md:text-[13px]">
-                    <span>03</span>
+                    <span>04</span>
                     <span>/</span>
                     <span>PROJECTS</span>
                 </div>

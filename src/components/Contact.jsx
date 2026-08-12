@@ -43,7 +43,7 @@ const Contact = () => {
                 <div className="flex flex-col gap-8 md:gap-10">
                     <div className="flex flex-col gap-5">
                         <div className="flex gap-3 font-mono text-[11px] font-medium tracking-[2px] text-[#85837E] sm:text-[13px] sm:tracking-[3px]">
-                            <span>07</span>
+                            <span>05</span>
                             <span>/</span>
                             <span>CONNECT</span>
                         </div>
