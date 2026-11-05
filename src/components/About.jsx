@@ -1,88 +1,81 @@
-import React from 'react'
-import { MapPin, Laptop } from 'lucide-react'
+import React from "react";
+import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import { MdOutlineMail } from "react-icons/md";
+import { FiArrowUpRight } from "react-icons/fi";
+
 const About = () => {
-    return (
-        <main
-            id="about"
-            className="about grid grid-cols-1 gap-10 py-20 md:grid-cols-2 md:gap-12 md:py-30"
-        >
-            <section className="flex flex-col gap-5">
-                <div className="flex gap-3 font-mono text-[12px] font-medium text-[#71706F] md:text-[13px]">
-                    <span>02</span>
-                    <span>/</span>
-                    <span>BACKGROUND</span>
-                </div>
+  return (
+    <div className="px-5 py-6 flex flex-col gap-5 text-neutral-300">
+      <p className="text-base leading-relaxed">
+        Computer Science Student / Developer. I love turning ideas into products
+        and bringing things to life through code.
+      </p>
+      <ul className="flex flex-col gap-2 list-disc pl-6 text-[15px] leading-relaxed marker:text-neutral-500">
+        <li>
+          Full-stack development, AI, and building meaningful digital
+          experiences excite me.
+        </li>
 
-                <h1 className="about-heading font-editorial text-3xl leading-tight text-[#F2F0EB] sm:text-4xl">
-                    Designing with logic, building
-                    <br className="hidden sm:block" />
-                    with craft.
-                </h1>
+        <li>
+          I enjoy solving problems, experimenting with new technologies, and
+          learning by building.
+        </li>
 
-                <p className="font-sans text-sm leading-7 text-[#A3A3A0] md:text-base">
-                    As a Computer Science student, I enjoy building things and learning
-                    how they work. I'm mainly focused on web development, working with
-                    React and Node.js to turn ideas into practical applications. I'm
-                    always exploring new technologies and improving my skills through
-                    projects and hands-on experience.
-                </p>
+        <li>
+          Currently exploring{" "}
+          <strong className="text-white font-semibold">MERN Stack</strong>,
+          <strong className="text-white font-semibold">
+            {" "}
+            AI-powered applications
+          </strong>
+          , and crafting beautiful UI experiences.
+        </li>
+      </ul>
+      <div className="flex flex-wrap gap-3">
+        <a
+          href="#contact"
+          className="group flex items-center gap-2 px-4 py-2 rounded-md
+          bg-white text-black text-sm font-medium
+          hover:bg-neutral-200 transition-colors">
+          <MdOutlineMail size={18} />
+          Send an Email
+          <FiArrowUpRight className="opacity-60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </a>
+      </div>
 
-                <div className="flex h-auto w-full flex-col justify-center gap-4 border border-[#282828] bg-[#121212] px-5 py-6 text-white sm:h-30 sm:px-7">
-                    <span className="flex items-center gap-2 text-sm sm:text-base">
-                        <Laptop size={20} />
-                        B.Tech Computer Science & Engineering
-                    </span>
+      <div className="flex flex-col gap-3">
+        <p className="text-sm text-neutral-500">
+          <span className="text-white font-semibold">Socials:</span>
+        </p>
 
-                    <span className="flex items-center gap-2 text-sm sm:text-base">
-                        <MapPin size={20} />
-                        Kolkata
-                    </span>
-                </div>
-            </section>
+        <div className="flex flex-wrap gap-2">
+          <a
+            href="https://www.github.com/Pratyush2312"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 px-3 py-2 rounded-md
+            border border-neutral-800 bg-neutral-900/50
+            text-neutral-400 text-sm hover:text-white
+            hover:border-neutral-600 transition-all">
+            <FaGithub size={17} />
+            GitHub
+          </a>
 
-            <section className="flex flex-col gap-7">
-                <div className="flex h-auto w-full flex-col justify-center gap-5 border border-[#282828] bg-[#121212] px-5 py-7 text-white sm:px-10 md:min-h-65 md:py-8">
-                    <h1 className="font-editorial text-[24px] font-semibold text-[#F2F0EB]">
-                        Building & Learning
-                    </h1>
+          <a
+            href="https://www.linkedin.com/in/pratyush-singh-70233635a"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 px-3 py-2 rounded-md
+            border border-neutral-800 bg-neutral-900/50
+            text-neutral-400 text-sm hover:text-white
+            hover:border-neutral-600 transition-all">
+            <FaLinkedinIn size={17} />
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-                    <p className="font-sans text-sm leading-7 text-[#A3A3A0] sm:text-base sm:leading-[1.75]">
-                        I enjoy turning ideas into working projects and learning something
-                        new with every one. From web applications with React and Node.js
-                        to smaller experiments in Python, I like exploring different
-                        technologies and seeing what I can create with them.
-                        <br />
-                        I'm still learning, but that's what makes building projects
-                        exciting. Each project helps me understand development a little
-                        better and gives me something new to improve.
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                    <div className="flex min-h-30 flex-col justify-center gap-2 border border-[#282828] bg-[#121212] px-5 py-5 text-white">
-                        <p className="font-mono text-[13px] font-medium tracking-[1.5px] text-[#85837E]">
-                            FRONTEND
-                        </p>
-
-                        <p className="max-w-70 font-sans text-[15px] leading-[1.45] text-[#C6C4C0]">
-                            React, Tailwind CSS, JavaScript, Redux Toolkit, Responsive
-                            Design, GSAP.
-                        </p>
-                    </div>
-
-                    <div className="flex min-h-30 flex-col justify-center gap-2 border border-[#282828] bg-[#121212] px-5 py-5 text-white">
-                        <p className="font-mono text-[13px] font-medium tracking-[1.5px] text-[#85837E]">
-                            BACKEND
-                        </p>
-
-                        <p className="max-w-70 font-sans text-[15px] leading-[1.45] text-[#C6C4C0]">
-                            Node.js, Express, MongoDB, Python, REST APIs, Git & GitHub.
-                        </p>
-                    </div>
-                </div>
-            </section>
-        </main>
-    )
-}
-
-export default About
+export default About;

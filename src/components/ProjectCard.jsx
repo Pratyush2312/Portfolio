@@ -1,59 +1,63 @@
-import { ArrowUpRight, SquareArrowOutUpRight } from "lucide-react";
-import { RiGithubFill } from "@remixicon/react";
+import React from "react";
+import { MdArrowOutward } from "react-icons/md";
+
 const ProjectCard = ({ project }) => {
-    return (
-        <div className="project-card flex flex-col gap-6 bg-[#121212] border border-[#282828] p-10 text-[#F2F0EB]">
-            <div className="project-content flex items-center justify-between">
-                <div className="flex justify-center items-center border border-[#282828] px-3 py-2 font-mono text-xs">
-                    {project.category}
-                </div>
-                
-                <ArrowUpRight
-                    size={24}
-                    strokeWidth={1.5}
-                    className="text-[#85837E]"
-                />
-            </div>
-
-          
-            <div className="project-content flex flex-col gap-3">
-                <h2 className="font-editorial text-4xl font-medium">
-                    {project.name}
-                </h2>
-
-                
-            </div>
-
-            <p className="project-content max-w-xl font-sans text-base leading-7 text-[#A3A3A0]">
-                {project.description}
-            </p>
-
-            <div className="project-divider h-px w-full bg-[#282828]" />
-
-            <div className="project-content flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                    <span
-                        key={tech}
-                        className="border border-[#282828] px-3 py-1.5 font-mono text-xs text-[#C6C4C0]"
-                    >
-                        {tech}
-                    </span>
-                ))}
-            </div>
-            <div className="flex gap-4">
-                <a href={project.repoLink} className="flex-1 flex gap-2 items-center justify-center rounded-2xl bg-[#090909] py-3 font-mono text-sm font-semibold text-[#F2F0EB]">
-                    <span>Github</span> <RiGithubFill className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
-                </a>
-
-                {project.demo && (
-                    <a href={project.demoLink} className="flex-1 flex gap-2 items-center justify-center 
-                    rounded-2xl bg-[#F2F0EB] py-3 font-mono text-sm font-semibold text-[#090909]">
-                        <span>Live Demo</span> <SquareArrowOutUpRight className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
-                    </a>
-                )}
-            </div>
+  return (
+    <article className="group flex min-w-0 flex-col gap-3 font-sans">
+      <div className="overflow-hidden rounded-md border border-neutral-800 bg-[#0b0b0d] p-2 sm:p-3">
+        <div className="aspect-16/10 overflow-hidden rounded-md border border-neutral-800 bg-black">
+          <img
+            src={project.image}
+            alt={`${project.title} preview`}
+            loading="lazy"
+            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+          />
         </div>
-    );
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <h2 className="text-base font-semibold tracking-tight text-white sm:text-lg">
+          {project.title}
+        </h2>
+
+        <p className="text-xs leading-relaxed text-[#93939C] sm:text-sm">
+          {project.description}
+        </p>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <ul className="flex flex-wrap items-center gap-2">
+          {project.techStack.map(({ name, Icon }) => (
+            <li key={name} className="group/icon relative">
+              {Icon && (
+                <>
+                  <Icon
+                    role="img"
+                    aria-label={name}
+                    size={17}
+                    className="text-[#93939C] transition-colors group-hover/icon:text-white sm:size-[18px]"
+                  />
+
+                  <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/10 bg-neutral-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover/icon:opacity-100">
+                    {name}
+                  </span>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={project.liveURL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex shrink-0 items-center gap-1 text-xs text-[#93939C] transition-colors hover:text-white sm:text-[13px]">
+          View Project
+          <MdArrowOutward size={15} />
+        </a>
+      </div>
+    </article>
+  );
 };
 
 export default ProjectCard;

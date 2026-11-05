@@ -1,45 +1,42 @@
-import React, { useEffect, useRef } from 'react'
-import gsap from 'gsap';
-import ScrollToPlugin from 'gsap/ScrollToPlugin';
+import React from "react";
+import { TypewriterText } from "tatva-ui";
+
 const Hero = () => {
-    gsap.registerPlugin(ScrollToPlugin);
-    const scrollTOSection = (section) => {
-        gsap.to(window, {
-            scrollTo: `#${section}`,
-            duration: 1,
-            ease: "power3.out"
-        })
-    }
+  const lines = [
+    "Turning 'what if?' into 'it works!'",
+    "Open to building something cool.",
+    "Building the plane while flying it",
+  ];
 
-    return (
-        <main className="grid grid-cols-1 py-25 md:grid-cols-2 md:py-50">
-            <section className="flex flex-col gap-5">
-                <span></span>
+  return (
+    <header className="flex flex-col gap-4 px-4 py-8 sm:px-6 sm:py-10 md:py-12">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl md:text-4xl lg:text-5xl">
+          Pratyush Singh
+        </h1>
 
-                <h1 className="hero-heading font-editorial text-5xl font-semibold leading-tight text-[#F2F0EB] md:text-7xl">
-                    Hi, I'm Pratyush.
-                </h1>
+        <p className="text-sm text-[#93939C] sm:text-[15px] md:text-base">
+          Computer Science student <span className="mx-1">·</span> Full Stack
+          Developer
+        </p>
+      </div>
 
-                <p className="hero-description font-sans text-sm leading-6 text-white md:text-xl md:leading-8">
-                    Computer Science student building web experiences with React, Node.js and JavaScript. Always learning, always building.
-                </p>
+      <p className="min-h-5 font-mono text-xs text-neutral-500 sm:text-sm md:text-base">
+        <TypewriterText
+          words={lines}
+          typingSpeed={50}
+          deletingSpeed={50}
+          pauseDuration={100}
+          className="typewriter-text"
+        />
 
-                <div className="hero-buttons flex flex-col gap-3 sm:flex-row sm:gap-5">
-                    <button
-                        onClick={() => scrollTOSection("projects")}
-                        className="bg-[#f2f0eb] px-5 py-3 text-xs font-mono text-black sm:px-4 sm:py-2">
-                        VIEW PROJECTS
-                    </button>
+        <span
+          aria-hidden="true"
+          className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] bg-neutral-500 motion-safe:animate-pulse"
+        />
+      </p>
+    </header>
+  );
+};
 
-                    <button
-                        onClick={() => scrollTOSection("contact")}
-                        className="border border-[#202127] px-4 py-3 font-mono text-xs text-white sm:py-2">
-                        LET'S CONNECT
-                    </button>
-                </div>
-            </section>
-        </main>
-    )
-}
-
-export default Hero
+export default Hero;

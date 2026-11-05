@@ -4,32 +4,20 @@
 
 
 
+*{
+    user-select: none;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
 @theme{
     --font-editorial: "Cormorant Garamond", serif;
     --font-sans: "Inter", sans-serif;
     --font-mono: "IBM Plex Mono", monospace;
 }
 
-.grid-background {
-    min-height: 100vh;
-    background-color: #0A0A0A;
-
-    background-image:
-        radial-gradient(circle at center,
-            transparent 0%,
-            rgba(8, 8, 8, 0.15) 45%,
-            rgba(8, 8, 8, 0.95) 100%),
-        linear-gradient(rgba(255, 255, 255, 0.055) 1px,
-            transparent 1px),
-        linear-gradient(90deg,
-            rgba(255, 255, 255, 0.055) 1px,
-            transparent 1px);
-
-    background-size:
-        100% 100%,
-        40px 40px,
-        40px 40px;
-}
 
 
 ::-webkit-scrollbar {

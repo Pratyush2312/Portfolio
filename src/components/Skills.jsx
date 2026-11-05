@@ -1,123 +1,145 @@
-import { CodeXml, Server, Database, PanelsTopLeft, GitBranch } from 'lucide-react'
-import React from 'react'
+import React from "react";
+import { DiRedis } from "react-icons/di";
+import { FaHtml5, FaCss3Alt } from "react-icons/fa";
+import {
+  SiJavascript,
+  SiPython,
+  SiCplusplus,
+  SiC,
+  SiReact,
+  SiTailwindcss,
+  SiBootstrap,
+  SiNodedotjs,
+  SiExpress,
+  SiMongodb,
+  SiGit,
+  SiGithub,
+  SiTypescript,
+  SiRedux,
+  SiSocketdotio,
+  SiPostman,
+  SiGsap,
+  SiJsonwebtokens,
+  SiRazorpay,
+  SiLangchaincorporate,
+  SiLanggraph,
+} from "react-icons/si";
+import { TbBrandOauth } from "react-icons/tb";
 
-const Skills = () => {
+const skillGroups = [
+  {
+    label: "Languages",
+    items: [
+      { name: "TypeScript", Icon: SiTypescript },
+      { name: "JavaScript", Icon: SiJavascript },
+      { name: "Python", Icon: SiPython },
+      { name: "C++", Icon: SiCplusplus },
+      { name: "C", Icon: SiC },
+    ],
+  },
+  {
+    label: "Frontend",
+    items: [
+      { name: "React", Icon: SiReact },
+      { name: "Tailwind CSS", Icon: SiTailwindcss },
+      { name: "Bootstrap", Icon: SiBootstrap },
+      { name: "HTML", Icon: FaHtml5 },
+      { name: "CSS", Icon: FaCss3Alt },
+      { name: "Redux", Icon: SiRedux },
+    ],
+  },
+  {
+    label: "Backend",
+    items: [
+      { name: "Node.js", Icon: SiNodedotjs },
+      { name: "Express.js", Icon: SiExpress },
+    ],
+  },
+  {
+    label: "Database",
+    items: [
+      { name: "MongoDB", Icon: SiMongodb },
+      { name: "Redis", Icon: DiRedis },
+    ],
+  },
+  {
+    label: "Authentication",
+    items: [
+      { name: "OAuth 2.0", Icon: TbBrandOauth },
+      { name: "JWT", Icon: SiJsonwebtokens },
+    ],
+  },
+  {
+    label: "Generative AI",
+    items: [
+      { name: "Langchain", Icon: SiLangchaincorporate },
+      { name: "Langgraph", Icon: SiLanggraph },
+    ],
+  },
+  {
+    label: "Integrations",
+    items: [{ name: "Razorpay", Icon: SiRazorpay }, { name: "REST APIs" }],
+  },
+  {
+    label: "Libraries",
+    items: [
+      { name: "Socket.io", Icon: SiSocketdotio },
+      { name: "GSAP", Icon: SiGsap },
+    ],
+  },
+  {
+    label: "Tools",
+    items: [
+      { name: "Git", Icon: SiGit },
+      { name: "GitHub", Icon: SiGithub },
+      { name: "Postman", Icon: SiPostman },
+    ],
+  },
+];
 
-    const skills = [
-        {
-            name: "React",
-            technology: "Frontend",
-            proficiency: 92,
-            icon: CodeXml
-        },
-        {
-            name: "JavaScript (ES6+)",
-            technology: "Languages",
-            proficiency: 96,
-            icon: CodeXml
-        },
-        {
-            name: "Node.js",
-            technology: "Backend",
-            proficiency: 85,
-            icon: Server
-        },
-        {
-            name: "Express",
-            technology: "Backend",
-            proficiency: 82,
-            icon: Server
-        },
-        {
-            name: "MongoDB",
-            technology: "Database",
-            proficiency: 80,
-            icon: Database
-        },
-        {
-            name: "Tailwind CSS",
-            technology: "Styling",
-            proficiency: 94,
-            icon: PanelsTopLeft
-        },
-        {
-            name: "Git & GitHub",
-            technology: "Tools",
-            proficiency: 88,
-            icon: GitBranch
-        },
-        {
-            name: "Python",
-            technology: "Languages",
-            proficiency: 85,
-            icon: CodeXml
-        }
-    ];
+const Skills = () => (
+  <div id="skills" className="flex flex-col font-sans">
+    {skillGroups.map(({ label, items }) => (
+      <div
+        key={label}
+        className="
+          grid grid-cols-1 gap-2
+          border-b border-dotted border-neutral-800
+          py-3 first:pt-1 last:border-b-0 last:pb-1
+          sm:grid-cols-[100px_minmax(0,1fr)] sm:gap-3
+          md:grid-cols-[110px_minmax(0,1fr)] md:gap-4
+        ">
+        <span className="pt-1 text-xs tracking-wide text-[#93939C] sm:text-sm">
+          {label}
+        </span>
 
-    return (
-        <main
-            id="skills"
-            className="skills flex flex-col gap-7 py-20 md:py-30"
-        >
-            <div className="flex flex-col gap-5">
-                <div className="flex gap-3 font-mono text-[12px] font-medium text-[#71706F] md:text-[13px]">
-                    <span>03</span>
-                    <span>/</span>
-                    <span>SKILLS</span>
-                </div>
+        <ul className="flex flex-wrap gap-1.5 sm:gap-2">
+          {items.map(({ name, Icon }) => (
+            <li
+              key={name}
+              className="
+                group inline-flex items-center gap-1.5
+                rounded-md border border-white/10
+                bg-white/[0.03] px-2 py-1
+                text-xs text-white/80
+                transition-colors duration-200
+                hover:border-white/25 hover:bg-white/[0.08]
+                sm:gap-2 sm:px-2.5 sm:py-1.5 sm:text-sm
+              ">
+              {Icon && (
+                <Icon
+                  size={14}
+                  aria-hidden="true"
+                  className="shrink-0 text-[#93939C] transition-colors group-hover:text-white sm:size-[15px]"
+                />
+              )}
+              <span>{name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+);
 
-                <h1 className="skill-heading font-editorial text-3xl leading-tight text-[#F2F0EB] sm:text-4xl">
-                    Technical Stack & Proficiency
-                </h1>
-            </div>
-
-            <section className="grid grid-cols-1 gap-y-5 text-white sm:grid-cols-2 md:grid-cols-4 md:gap-x-6">
-                {skills.map((skill) => {
-                    const Icon = skill.icon;
-
-                    return (
-                        <div
-                            key={skill.name}
-                            className="skill-card flex w-full flex-col gap-4 border border-[#282828] bg-[#121212] px-4 py-4"
-                        >
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center justify-center bg-[#1C1C1C] p-3">
-                                    {Icon && <Icon size={24} />}
-                                </div>
-
-                                <div className="font-mono text-xs font-medium text-[#82817F] sm:text-sm">
-                                    {skill.technology}
-                                </div>
-                            </div>
-
-                            <h1 className="font-sans text-base font-semibold sm:text-lg">
-                                {skill.name}
-                            </h1>
-
-                            <div className="h-2 w-full rounded-2xl bg-[#1C1C1C]">
-                                <div
-                                    className="proficiency-bar h-2 rounded-2xl bg-white"
-                                    style={{
-                                        width: `${skill.proficiency}%`,
-                                    }}
-                                />
-                            </div>
-
-                            <div className="flex justify-between">
-                                <p className="font-mono text-xs font-medium text-[#82817F] sm:text-sm">
-                                    Proficiency
-                                </p>
-
-                                <p className="font-mono text-xs font-medium text-[#82817F] sm:text-sm">
-                                    {skill.proficiency}%
-                                </p>
-                            </div>
-                        </div>
-                    );
-                })}
-            </section>
-        </main>
-    )
-}
-
-export default Skills
+export default Skills;

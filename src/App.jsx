@@ -1,158 +1,108 @@
-import { useLayoutEffect, useRef, useState } from 'react'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import About from './components/About'
-import Skills from './components/Skills'
-import Projects from './components/Projects'
-import Contact from './components/Contact'
-import Loader from './components/Loader'
-import gsap from 'gsap'
-import ScrollTrigger from 'gsap/src/ScrollTrigger'
-import Terminal from './components/Terminal'
+import About from "./components/About";
+import Banner from "./components/Banner";
+import Collaboration from "./components/Collaboration";
+import Contact from "./components/Contact";
+import Expereince from "./components/Expereince";
+import Hero from "./components/Hero";
+import Projects from "./components/Projects";
+import Skills from "./components/Skills";
+import DesktopIndex from "./components/DescktopIndex";
+import MobileIndex from "./components/MobileIndex";
+
+const Plus = ({ className = "" }) => (
+  <svg
+    aria-hidden="true"
+    width="11"
+    height="11"
+    viewBox="0 0 11 11"
+    className={`pointer-events-none absolute z-10 hidden bg-black text-white/40 sm:block ${className}`}>
+    <path d="M5.5 0v11M0 5.5h11" stroke="currentColor" strokeWidth="1" />
+  </svg>
+);
+
+const Row = ({ children, className = "" }) => (
+  <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_1.5fr_1fr]">
+    {/* Horizontal divider */}
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(to_right,transparent,rgba(255,255,255,0.16)_25%,rgba(255,255,255,0.16)_75%,transparent)]"
+    />
+
+    {/* Main content */}
+    <div
+      className={`relative col-start-1 border-x border-white/10 lg:col-start-2 ${className}`}>
+      {children}
+
+      <Plus className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
+      <Plus className="bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
+    </div>
+  </div>
+);
+
 const App = () => {
-  gsap.registerPlugin(ScrollTrigger);
-  const [terminal, setTerminal] = useState(false);
-
-  const appRef = useRef(null);
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const counter = {
-        value: 0
-      };
-      const t1 = gsap.timeline();
-
-      t1.to(counter, {
-        value: 100,
-        duration: 3,
-        ease: "power2.out",
-        onUpdate: () => {
-          document.querySelector(".loader-percentage").textContent =
-            `${Math.round(counter.value)}%`;
-        }
-      });
-
-      t1.to('.loader', {
-        yPercent: -100,
-        duration: 1.2,
-        ease: 'power2.inOut'
-      })
-
-        .from(".hero-heading", {
-          y: 100,
-          opacity: 0,
-          duration: 1
-        }, "-=0.5")
-
-        .from(".hero-description", {
-          y: 40,
-          opacity: 0,
-          duration: 1
-        }, "-=0.5")
-
-        .fromTo(".hero-buttons",
-          {
-            opacity: 0,
-            scale: 0.95
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 1
-          }, "-=0.5")
-
-
-      gsap.from(".about", {
-        scrollTrigger: {
-          trigger: ".about",
-          start: "top 80%",
-          toggleActions: "play reverse play reverse"
-        },
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.inOut"
-      })
-
-      gsap.from(".skill-heading", {
-        scrollTrigger: {
-          trigger: ".skills",
-          start: "top 70%",
-          toggleActions: "play reverse play reverse"
-        },
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.inOut",
-      })
-
-      gsap.from(".skill-card", {
-        opacity: 0,
-        rotateX: 35,
-        scale: 0.9,
-        transformPerspective: 800,
-        duration: 1,
-        stagger: 0.12,
-        ease: "back.out(1.4)",
-
-        scrollTrigger: {
-          trigger: ".skills",
-          start: "top 70%",
-          toggleActions: "play reverse play reverse"
-        }
-      });
-
-      gsap.from(".proficiency-bar", {
-        scaleX: 0,
-        transformOrigin: "left",
-        duration: 1,
-        stagger: 0.1,
-        ease: "power3.out",
-
-        scrollTrigger: {
-          trigger: ".skills",
-          start: "top 70%",
-          toggleActions: "play reverse play reverse"
-        }
-      });
-
-      gsap.from(".project-card", {
-        opacity: 0,
-        scale: 0.96,
-        clipPath: "inset(8% 0 8% 0)",
-        duration: 1,
-        stagger: 0.18,
-        ease: "power4.inOut",
-        scrollTrigger: {
-          trigger: ".projects",
-          start: "top 70%",
-          toggleActions: "play reverse play reverse"
-        }
-      })
-
-      
-
-    }, appRef);
-    return () => ctx.revert();
-  }, [])
-
   return (
-    <main ref={appRef} className='px-3 py-3 md:py-5 md:px-10 min-h-screen bg-[#090909] flex flex-col '>
-      {terminal && <Terminal setTerminal={setTerminal} />}
-      <Loader />
-      {/* <div className='grid-background'> */}
-      <Navbar setTerminal={setTerminal} />
-      <Hero />
-      {/* </div> */}
-      <hr className='text-[#373736]' />
-      <About />
-      <hr className='text-[#373736]' />
-      <Skills />
-      <hr className='text-[#373736]' />
-      <Projects />
-      <hr className='text-[#373736]' />
-      <Contact />
-    </main>
-  )
-}
+    <main className="relative min-h-screen bg-black pb-24 text-white lg:pb-0">
+      <aside className="absolute inset-y-0 right-0 top-50 z-20 hidden w-[28.57%] lg:block">
+        <div className="sticky top-24 pl-8">
+          <DesktopIndex />
+        </div>
+      </aside>
+      <MobileIndex/>
+      <Row>
+        <Banner />
+      </Row>
 
-export default App
+      <Row>
+        <Hero />
+      </Row>
+
+      <Row>
+        <About />
+      </Row>
+
+      <Row className="px-3 py-2">
+        <span className="font-sans font-semibold text-white">Experiences</span>
+      </Row>
+
+      <Row className="px-3 py-2">
+        <Expereince />
+      </Row>
+
+      <Row className="px-3 py-2">
+        <span className="font-sans font-semibold text-white">Projects</span>
+      </Row>
+
+      <Row className="px-3 py-2">
+        <Projects />
+      </Row>
+
+      <Row className="px-3 py-2">
+        <span className="font-sans font-semibold text-white">
+          Collaborations
+        </span>
+      </Row>
+
+      <Row className="px-3 py-2">
+        <Collaboration />
+      </Row>
+
+      <Row className="px-3 py-2">
+        <span className="font-sans font-semibold text-white">Skills</span>
+      </Row>
+
+      <Row className="px-3 py-2">
+        <Skills />
+      </Row>
+
+      <Row className="px-3 py-2">
+        <span className="font-sans font-semibold text-white">Contact</span>
+      </Row>
+
+      <Row className="px-3 py-2">
+        <Contact />
+      </Row>
+    </main>
+  );
+};
+
+export default App;

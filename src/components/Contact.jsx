@@ -1,163 +1,226 @@
-import { useRef, useState } from 'react'
-import { Mail, GitBranch, Send } from 'lucide-react'
-import emailjs from '@emailjs/browser'
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { FiArrowUpRight, FiCheck } from "react-icons/fi";
+
+const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+const EMAIL = "singhpratyush981@gmail.com";
+const topics = ["Job / internship", "Project", "Just saying hi"];
+
+const inputClass =
+  "mt-1.5 w-full bg-transparent text-[15px] text-white placeholder:text-neutral-600 outline-none";
+
+
+const Row = ({ n, label, error, children }) => (
+  <label className="group grid grid-cols-[44px_1fr] border-b border-dotted border-neutral-800">
+    <span className="flex items-start justify-center border-r border-dotted border-neutral-800 pt-4 font-mono text-xs text-neutral-600 transition-colors group-focus-within:text-white">
+      {n}
+    </span>
+    <span className="block px-3 pb-3 pt-3.5">
+      <span className={`text-xs ${error ? "text-red-400" : "text-[#93939C]"}`}>
+        {label}
+      </span>
+      {children}
+      {error && (
+        <span role="alert" className="mt-1.5 block text-xs text-red-400">
+          {error.message}
+        </span>
+      )}
+    </span>
+  </label>
+);
+
 const Contact = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    clearErrors,
+    watch,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      topic: topics[0],
+      name: "",
+      email: "",
+      message: "",
+      botcheck: false,
+    },
+    mode: "onChange",
+  });
 
+  const [sent, setSent] = useState(false);
 
-    const formRef = useRef(null);
-    const [sending, setSending] = useState(false);
-    const [sent, setSent] = useState(false);
+  useEffect(() => {
+    if (!sent) return;
+    const t = setTimeout(() => setSent(false), 4000);
+    return () => clearTimeout(t);
+  }, [sent]);
 
-    const sendEmail = async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setSending(true);
+  const [name, email, message] = watch(["name", "email", "message"]);
+  const progress =
+    ([name, email, message].filter((v) => v?.trim()).length / 3) * 100;
 
-        try {
-            await emailjs.sendForm(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-                formRef.current,
-                {
-                    publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
-                }
-            );
+  const onSubmit = async (values) => {
+    if (values.botcheck) return; // honeypot
+    clearErrors("root");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          subject: `Portfolio: ${values.topic}`,
+          topic: values.topic,
+          name: values.name,
+          email: values.email,
+          message: values.message,
+        }),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message || "Request failed");
+      reset(); 
+      setSent(true);
+    } catch {
+      setError("root", { type: "server" });
+    }
+  };
 
-            setSent(true);
-            formRef.current.reset();
-            setTimeout(() => { setSent(false) }, 2000);
+  const disabled = !isValid || isSubmitting;
 
-        } catch (error) {
-            console.error("Email failed:", error);
-        } finally {
-            setSending(false);
-        }
-    };
+  return (
+    <form id="contact" onSubmit={handleSubmit(onSubmit)} noValidate className="-mx-3 -my-2">
+      
+      <fieldset className="grid grid-cols-[44px_1fr] border-b border-dotted border-neutral-800">
+        <legend className="sr-only">What is this about?</legend>
+        <span className="flex items-start justify-center border-r border-dotted border-neutral-800 pt-4 font-mono text-xs text-neutral-600">
+          00
+        </span>
+        <div className="px-3 pb-3.5 pt-3.5">
+          <span className="text-xs text-[#93939C]">What's this about?</span>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {topics.map((t) => (
+              <label key={t}>
+                <input
+                  type="radio"
+                  value={t}
+                  className="peer sr-only"
+                  {...register("topic")}
+                />
+                <span className="inline-block cursor-pointer rounded-full border border-neutral-700 px-3 py-1 text-sm text-neutral-300 transition-colors hover:border-neutral-500 peer-checked:border-white peer-checked:bg-white peer-checked:text-black peer-focus-visible:ring-2 peer-focus-visible:ring-white/40">
+                  {t}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </fieldset>
 
-    return (
-        <main
-            id="contact"
-            className="flex flex-col gap-10 px-5 py-20 sm:px-8 md:gap-12 md:px-10 md:py-30"
-        >
-            <section className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
-                <div className="flex flex-col gap-8 md:gap-10">
-                    <div className="flex flex-col gap-5">
-                        <div className="flex gap-3 font-mono text-[11px] font-medium tracking-[2px] text-[#85837E] sm:text-[13px] sm:tracking-[3px]">
-                            <span>05</span>
-                            <span>/</span>
-                            <span>CONNECT</span>
-                        </div>
+      <Row n="01" label="Your name" error={errors.name}>
+        <input
+          type="text"
+          autoComplete="name"
+          placeholder="Ada Lovelace"
+          aria-invalid={!!errors.name}
+          className={inputClass}
+          {...register("name", {
+            required: "Please enter your name",
+            minLength: { value: 2, message: "Name is too short" },
+          })}
+        />
+      </Row>
 
-                        <h1 className="max-w-xl font-editorial text-4xl font-medium leading-[0.95] text-[#F2F0EB] sm:text-5xl md:text-6xl">
-                            Let's build something
-                            <br />
-                            remarkable.
-                        </h1>
+      <Row n="02" label="Where can I reply?" error={errors.email}>
+        <input
+          type="email"
+          autoComplete="email"
+          placeholder="ada@example.com"
+          aria-invalid={!!errors.email}
+          className={inputClass}
+          {...register("email", {
+            required: "Please enter your email",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Enter a valid email address",
+            },
+          })}
+        />
+      </Row>
 
-                        <p className="max-w-xl font-sans text-sm leading-7 text-[#A3A19D] sm:text-base md:text-[18px] md:leading-8">
-                            Whether you have an inquiry regarding full-stack engineering
-                            roles, collaborative open-source projects, or technical
-                            consulting, my inbox is always open.
-                        </p>
-                    </div>
+      <Row n="03" label="Your message" error={errors.message}>
+        <textarea
+          rows={4}
+          placeholder="A role, a project idea, or a quick hello..."
+          aria-invalid={!!errors.message}
+          className={`${inputClass} resize-none`}
+          {...register("message", {
+            required: "Please write a message",
+            minLength: {
+              value: 10,
+              message: "Message should be at least 10 characters",
+            },
+            maxLength: {
+              value: 2000,
+              message: "Message is too long (2000 max)",
+            },
+          })}
+        />
+      </Row>
 
-                    <div className="flex flex-col gap-5">
-                        <div className="flex items-start gap-4">
-                            <Mail
-                                size={20}
-                                strokeWidth={1.5}
-                                className="mt-0.5 shrink-0 text-[#85837E]"
-                            />
+     
+      <input
+        type="checkbox"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+        className="hidden"
+        {...register("botcheck")}
+      />
 
-                            <span className="break-all font-mono text-sm text-[#F2F0EB] sm:text-[15px]">
-                                singhpratyush981@gmail.com
-                            </span>
-                        </div>
+  
+      <button
+        type="submit"
+        disabled={disabled}
+        className="group relative flex w-full items-center justify-between overflow-hidden px-3 py-4 text-left text-sm font-medium text-white transition-colors hover:bg-white/[0.03] disabled:cursor-not-allowed disabled:hover:bg-transparent">
+        <span
+          aria-hidden
+          className="absolute inset-y-0 left-0 bg-white/[0.06] transition-[width] duration-500 ease-out"
+          style={{ width: `${sent ? 100 : progress}%` }}
+        />
+        <span
+          className={`relative ${disabled && !isSubmitting && !sent ? "text-neutral-500" : ""}`}>
+          {isSubmitting
+            ? "Sending..."
+            : sent
+              ? "Message sent. Thank you!"
+              : "Send message"}
+        </span>
+        <span className="relative text-neutral-400 transition-transform group-enabled:group-hover:translate-x-0.5 group-enabled:group-hover:-translate-y-0.5">
+          {sent ? (
+            <FiCheck size={16} className="text-green-400" />
+          ) : (
+            <FiArrowUpRight size={16} />
+          )}
+        </span>
+      </button>
 
-                        <div className="flex items-start gap-4">
-                            <GitBranch
-                                size={20}
-                                strokeWidth={1.5}
-                                className="mt-0.5 shrink-0 text-[#85837E]"
-                            />
+      <p aria-live="polite" className="px-3 pb-3 text-sm">
+        {sent && <span className="sr-only">Message sent.</span>}
+        {errors.root && (
+          <span className="text-red-400">
+            Something went wrong. Email me at{" "}
+            <a href={`mailto:${EMAIL}`} className="underline">
+              {EMAIL}
+            </a>
+            .
+          </span>
+        )}
+      </p>
+    </form>
+  );
+};
 
-                            <span className="break-all font-mono text-sm text-[#F2F0EB] sm:text-[15px]">
-                                https://github.com/Pratyush2312
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="border border-[#303030] bg-[#121212] p-5 sm:p-7 md:p-10 lg:p-12">
-                    <form
-                        onSubmit={sendEmail}
-                        ref={formRef}
-                        className="flex flex-col gap-6 md:gap-8"
-                    >
-                        <div className="flex flex-col gap-3">
-                            <label className="font-mono text-[11px] font-medium tracking-wide text-[#8B9EB0] sm:text-[13px]">
-                                YOUR NAME
-                            </label>
-
-                            <input
-                                required
-                                name="name"
-                                type="text"
-                                placeholder="e.g. Sarah Connor"
-                                className="h-13 w-full border border-[#3A3A3A] bg-[#1A1A1A] px-4 font-sans text-sm text-[#F2F0EB] outline-none placeholder:text-[#686868] focus:border-[#666666] sm:h-14 sm:px-5 sm:text-[16px]"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-3">
-                            <label className="font-mono text-[11px] font-medium tracking-wide text-[#8B9EB0] sm:text-[13px]">
-                                EMAIL ADDRESS
-                            </label>
-
-                            <input
-                                required
-                                name="email"
-                                type="email"
-                                placeholder="e.g. sarah@cyberdyne.com"
-                                className="h-13 w-full border border-[#3A3A3A] bg-[#1A1A1A] px-4 font-sans text-sm text-[#F2F0EB] outline-none placeholder:text-[#686868] focus:border-[#666666] sm:h-14 sm:px-5 sm:text-[16px]"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-3">
-                            <label className="font-mono text-[11px] font-medium tracking-wide text-[#8B9EB0] sm:text-[13px]">
-                                MESSAGE
-                            </label>
-
-                            <textarea
-                                required
-                                name="message"
-                                rows="5"
-                                placeholder="Discuss project requirements or collaboration..."
-                                className="w-full resize-none border border-[#3A3A3A] bg-[#1A1A1A] px-4 py-4 font-sans text-sm text-[#F2F0EB] outline-none placeholder:text-[#686868] focus:border-[#666666] sm:px-5 sm:text-[16px]"
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="flex h-14 w-full items-center justify-center gap-3 bg-[#F2F0EB] font-mono text-xs font-semibold tracking-[2px] text-[#111111] transition-colors hover:bg-white sm:h-15 sm:text-[13px]"
-                        >
-                            <span>
-                                {sending
-                                    ? "SENDING"
-                                    : sent
-                                        ? "MESSAGE SENT"
-                                        : "SEND MESSAGE"}
-                            </span>
-
-                            <Send
-                                size={19}
-                                strokeWidth={1.5}
-                            />
-                        </button>
-                    </form>
-                </div>
-            </section>
-        </main>
-    )
-}
-
-export default Contact
+export default Contact;
